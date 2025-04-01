@@ -45,8 +45,7 @@ with st.form("deal_form"):
     submitted = st.form_submit_button("Analyze Deal")
 
 if submitted:
-    comps = pd.read_csv(pd.compat.StringIO(comps_data), names=["address", "price
-     comps = pd.read_csv(pd.compat.StringIO(comps_data), names=["address", "price", "sqft"])
+    comps = pd.read_csv(pd.compat.StringIO(comps_data), names=["address", "price", "sqft"])
     comps['subject_sqft'] = subject_sqft
 
     arv = estimate_arv(comps)
@@ -60,4 +59,3 @@ if submitted:
     st.metric("Max Allowable Offer (MAO)", f"${mao:,.2f}")
     st.markdown("---")
     st.markdown(f"**🧠 Deal Summary:**\n\n{commentary}")
-                                                              
