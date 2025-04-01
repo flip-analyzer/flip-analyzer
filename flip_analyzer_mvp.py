@@ -67,15 +67,18 @@ if submitted:
     else:
         verdict = "❌ Too Expensive. The purchase price is above your MAO."
 
-    # GPT commentary
+    try:
     commentary = generate_gpt_commentary(arv, mao, rehab_cost)
+except Exception as e:
+    commentary = "⚠️ GPT Summary unavailable. Please try again."
+    st.error(f"GPT Error: {e}")
 
-    # Display results
-    st.success("✅ Deal Analyzed")
-    st.metric("Estimated ARV", f"${arv:,.2f}")
-    st.metric("Rehab Cost", f"${rehab_cost:,.2f}")
-    st.metric("Max Allowable Offer (MAO)", f"${mao:,.2f}")
-    st.markdown(f"### {verdict}")
-    st.markdown("---")
-    st.markdown("**🧠 Deal Summary:**")
-    st.text_area("AI Commentary", value=commentary, height=200)
+# Display results
+st.success("✅ Deal Analyzed")
+st.metric("Estimated ARV", f"${arv:,.2f}")
+st.metric("Rehab Cost", f"${rehab_cost:,.2f}")
+st.metric("Max Allowable Offer (MAO)", f"${mao:,.2f}")
+st.markdown(f"### {verdict}")
+st.markdown("---")
+st.markdown("**🧠 Deal Summary:**")
+st.text_area("AI Commentary", value=commentary, height=200)
