@@ -35,10 +35,6 @@ def generate_gpt_commentary(arv, mao, rehab):
     )
     return response.choices[0].message.content
 
-)
-return response.choices[0].message.content
-
-
 st.title("🏠 FlipSmart AI – Deal Analyzer")
 
 with st.form("deal_form"):
