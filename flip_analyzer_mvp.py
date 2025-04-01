@@ -59,4 +59,6 @@ if submitted:
     st.metric("Rehab Cost", f"${rehab_cost:,.2f}")
     st.metric("Max Allowable Offer (MAO)", f"${mao:,.2f}")
     st.markdown("---")
-    st.markdown(f"**🧠 Deal Summary:**\n\n{commentary}")
+    st.markdown(f"<b>🧠 Deal Summary:</b><br><br>{commentary}", unsafe_allow_html=True)
+
+
