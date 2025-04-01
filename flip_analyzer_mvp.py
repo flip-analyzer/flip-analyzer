@@ -1,9 +1,10 @@
 import io
 import streamlit as st
 import pandas as pd
-import openai
+from openai import OpenAI
 
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
 
 def estimate_arv(comps_df):
     comps_df['price_per_sqft'] = comps_df['price'] / comps_df['sqft']
