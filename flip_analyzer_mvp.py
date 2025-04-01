@@ -53,32 +53,37 @@ with st.form("deal_form"):
     submitted = st.form_submit_button("Analyze Deal")
 
 if submitted:
-    comps = pd.read_csv(io.StringIO(comps_data), names=["address", "price", "sqft"])
-    comps['subject_sqft'] = subject_sqft
+    try:
+        comps = pd.read_csv(io.StringIO(comps_data), names=["address", "price", "sqft"])
+        comps['subject_sqft'] = subject_sqft
 
-    # Run calculations
-    arv = estimate_arv(comps)
-    rehab_cost = estimate_rehab(subject_sqft, rehab_level)
-    mao = calculate_mao(arv, rehab_cost)
+        # Run calculations
+        arv = estimate_arv(comps)
+        rehab_cost = estimate_rehab(subject_sqft, rehab_level)
+        mao = calculate_mao(arv, rehab_cost)
 
-    # Deal verdict
-    if purchase_price <= mao:
-        verdict = "✅ Great Deal! The purchase price is below your Max Allowable Offer."
-    else:
-        verdict = "❌ Too Expensive. The purchase price is above your MAO."
+        # Verdict logic
+        if purchase_price <= mao:
+            verdict = "✅ Great Deal! The purchase price is below your Max Allowable Offer."
+        else:
+            verdict = "❌ Too Expensive. The purchase price is above your MAO."
 
-try:
-    commentary = generate_gpt_commentary(arv, mao, rehab_cost)
-except Exception as e:
-    commentary = "⚠️ GPT Summary unavailable. Please try again."
-    st.error(f"GPT Error: {e}")
+        # GPT commentary (with nested try)
+        try:
+            commentary = generate_gpt_commentary(arv, mao, rehab_cost)
+        except Exception as e:
+            commentary = "⚠️ GPT Summary unavailable. Please try again."
+            st.error(f"GPT Error: {e}")
 
-# Display results
-st.success("✅ Deal Analyzed")
-st.metric("Estimated ARV", f"${arv:,.2f}")
-st.metric("Rehab Cost", f"${rehab_cost:,.2f}")
-st.metric("Max Allowable Offer (MAO)", f"${mao:,.2f}")
-st.markdown(f"### {verdict}")
-st.markdown("---")
-st.markdown("**🧠 Deal Summary:**")
-st.text_area("AI Commentary", value=commentary, height=200)
+        # Show results
+        st.success("✅ Deal Analyzed")
+        st.metric("Estimated ARV", f"${arv:,.2f}")
+        st.metric("Rehab Cost", f"${rehab_cost:,.2f}")
+        st.metric("Max Allowable Offer (MAO)", f"${mao:,.2f}")
+        st.markdown(f"### {verdict}")
+        st.markdown("---")
+        st.markdown("**🧠 Deal Summary:**")
+        st.text_area("AI Commentary", value=commentary, height=200)
+
+    except Exception as e:
+        st.error(f"❌ Something went wrong during analysis: {e}")
