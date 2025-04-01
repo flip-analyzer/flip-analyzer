@@ -1,4 +1,4 @@
-echo "# flip-analyzer" >> README.md
+# flip-analyzer"
 git init
 git add README.md
 git commit -m "first commit"
