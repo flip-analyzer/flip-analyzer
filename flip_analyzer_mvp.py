@@ -46,3 +46,18 @@ with st.form("deal_form"):
 
 if submitted:
     comps = pd.read_csv(pd.compat.StringIO(comps_data), names=["address", "price
+     comps = pd.read_csv(pd.compat.StringIO(comps_data), names=["address", "price", "sqft"])
+    comps['subject_sqft'] = subject_sqft
+
+    arv = estimate_arv(comps)
+    rehab_cost = estimate_rehab(subject_sqft, rehab_level)
+    mao = calculate_mao(arv, rehab_cost)
+    commentary = generate_gpt_commentary(arv, mao, rehab_cost)
+
+    st.success("✅ Deal Analyzed")
+    st.metric("Estimated ARV", f"${arv:,.2f}")
+    st.metric("Rehab Cost", f"${rehab_cost:,.2f}")
+    st.metric("Max Allowable Offer (MAO)", f"${mao:,.2f}")
+    st.markdown("---")
+    st.markdown(f"**🧠 Deal Summary:**\n\n{commentary}")
+                                                              
