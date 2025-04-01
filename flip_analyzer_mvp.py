@@ -67,7 +67,7 @@ if submitted:
     else:
         verdict = "❌ Too Expensive. The purchase price is above your MAO."
 
-    try:
+try:
     commentary = generate_gpt_commentary(arv, mao, rehab_cost)
 except Exception as e:
     commentary = "⚠️ GPT Summary unavailable. Please try again."
