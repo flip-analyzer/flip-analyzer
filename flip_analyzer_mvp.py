@@ -18,6 +18,9 @@ def estimate_rehab(sqft, level):
 def calculate_mao(arv, rehab_cost, profit_margin=0.2):
     return round(arv * (1 - profit_margin) - rehab_cost, 2)
 
+from openai import OpenAI
+client = OpenAI()
+
 def generate_gpt_commentary(arv, mao, rehab):
     prompt = f"""
     Analyze this real estate flip:
@@ -26,11 +29,12 @@ def generate_gpt_commentary(arv, mao, rehab):
     MAO: ${mao}
     Provide a one-paragraph smart investor summary.
     """
-    client = openai.OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response.choices[0].message.content
 
-response = client.chat.completions.create(
-    model="gpt-4",
-    messages=[{"role": "user", "content": prompt}]
 )
 return response.choices[0].message.content
 
