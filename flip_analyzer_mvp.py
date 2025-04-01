@@ -18,8 +18,7 @@ def estimate_rehab(sqft, level):
 def calculate_mao(arv, rehab_cost, profit_margin=0.2):
     return round(arv * (1 - profit_margin) - rehab_cost, 2)
 
-from openai import OpenAI
-client = OpenAI()
+import openai
 
 def generate_gpt_commentary(arv, mao, rehab):
     prompt = f"""
