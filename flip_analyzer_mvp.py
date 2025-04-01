@@ -29,10 +29,11 @@ def generate_gpt_commentary(arv, mao, rehab):
     Provide a one-paragraph smart investor summary.
     """
     response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[{"role": "user", "content": prompt}]
-)
-return response['choices'][0]['message']['content']
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response['choices'][0]['message']['content']
+
 
 st.title("🏠 FlipSmart AI – Deal Analyzer")
 
