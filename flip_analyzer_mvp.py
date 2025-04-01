@@ -5,7 +5,6 @@ from openai import OpenAI
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-
 def estimate_arv(comps_df):
     comps_df['price_per_sqft'] = comps_df['price'] / comps_df['sqft']
     avg_ppsqft = comps_df['price_per_sqft'].mean()
@@ -19,8 +18,6 @@ def estimate_rehab(sqft, level):
 def calculate_mao(arv, rehab_cost, profit_margin=0.2):
     return round(arv * (1 - profit_margin) - rehab_cost, 2)
 
-import openai
-
 def generate_gpt_commentary(arv, mao, rehab):
     prompt = f"""
     Analyze this real estate flip:
@@ -29,12 +26,11 @@ def generate_gpt_commentary(arv, mao, rehab):
     MAO: ${mao}
     Provide a one-paragraph smart investor summary.
     """
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}]
     )
-    return response['choices'][0]['message']['content']
-
+    return response.choices[0].message.content
 
 st.title("🏠 FlipSmart AI – Deal Analyzer")
 
