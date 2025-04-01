@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-from fpdf import FPDF
 import openai
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
@@ -46,15 +45,4 @@ with st.form("deal_form"):
     submitted = st.form_submit_button("Analyze Deal")
 
 if submitted:
-    comps = pd.read_csv(pd.compat.StringIO(comps_data), names=["address", "price", "sqft"])
-    comps['subject_sqft'] = subject_sqft
-
-    arv = estimate_arv(comps)
-    rehab_cost = estimate_rehab(subject_sqft, rehab_level)
-    mao = calculate_mao(arv, rehab_cost)
-    commentary = generate_gpt_commentary(arv, mao, rehab_cost)
-
-    st.success("✅ Deal Analyzed")
-    st.metric("Estimated ARV", f"${arv:,.2f}")
-    st.metric("Rehab Cost", f"${rehab_cost:,.2f}")
-    st
+    comps = pd.read_csv(pd.compat.StringIO(comps_data), names=["address", "price
